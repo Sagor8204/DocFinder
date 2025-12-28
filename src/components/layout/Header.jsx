@@ -1,10 +1,16 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
+import DepartmentsDropdown from "@/components/header/DepartmentsDropdown";
 
 export default function Header() {
   const [showDepartments, setShowDepartments] = useState(false);
+  const pathname = usePathname();
+
+  const handleMouseEnter = () => setShowDepartments(true);
+  const handleMouseLeave = () => setShowDepartments(false);
 
   return (
     <header className="max-w-253.75 px-5 mx-auto bg-white backdrop-blur-md flex justify-between items-center">
@@ -21,8 +27,10 @@ export default function Header() {
         <ul className="flex space-x-8 items-center text-sm">
           <li className="py-5">
             <Link
-              href="/about"
-              className="text-[#667070] hover:text-cyan-600 transition-colors"
+              href="/"
+              className={`hover:text-cyan-600 transition-colors ${
+                pathname === "/" ? "text-cyan-600" : "text-[#667070]"
+              }`}
             >
               About Us
             </Link>
@@ -31,7 +39,9 @@ export default function Header() {
           <li className="py-5">
             <Link
               href="/career"
-              className="text-[#667070] hover:text-cyan-600 transition-colors"
+              className={`hover:text-cyan-600 transition-colors ${
+                pathname === "/career" ? "text-cyan-600" : "text-[#667070]"
+              }`}
             >
               Career
             </Link>
@@ -39,60 +49,32 @@ export default function Header() {
 
           <li
             className="relative py-5"
-            onMouseEnter={() => setShowDepartments(true)}
-            onMouseLeave={() => setShowDepartments(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
             <Link
-              href="/departments"
-              className="text-[#667070] hover:text-cyan-600 transition-colors"
+              href="#"
+              className={`hover:text-cyan-600 transition-colors ${
+                pathname.startsWith("/department") ? "text-cyan-600" : "text-[#667070]"
+              }`}
             >
               Departments
             </Link>
 
-            {showDepartments && (
-              <div className="absolute top-full left-0 w-48 bg-white shadow-lg rounded-md py-2 z-10 border">
-                <ul>
-                  <li>
-                    <Link
-                      href="/departments/cardiology"
-                      className="block px-4 py-2 text-[#667070] hover:bg-gray-100"
-                    >
-                      Cardiology
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/departments/neurology"
-                      className="block px-4 py-2 text-[#667070] hover:bg-gray-100"
-                    >
-                      Neurology
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/departments/orthopedics"
-                      className="block px-4 py-2 text-[#667070] hover:bg-gray-100"
-                    >
-                      Orthopedics
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/departments/pediatrics"
-                      className="block px-4 py-2 text-[#667070] hover:bg-gray-100"
-                    >
-                      Pediatrics
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            )}
+            <DepartmentsDropdown
+              isOpen={showDepartments}
+              onClose={() => setShowDepartments(false)}
+            />
           </li>
 
           <li className="py-5">
             <Link
               href="/trust-transparency"
-              className="text-[#667070] hover:text-cyan-600 transition-colors"
+              className={`hover:text-cyan-600 transition-colors ${
+                pathname === "/trust-transparency"
+                  ? "text-cyan-600"
+                  : "text-[#667070]"
+              }`}
             >
               Trust & Transparency
             </Link>
